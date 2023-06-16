@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "942788934999",
+    "project_id": "gcc-church",
+    "storage_bucket": "gcc-church.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942788934999:android:e24641423f7a16555b5212",
+        "android_client_info": {
+          "package_name": "com.gracecommunitycenter.gracecommunitycenter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942788934999-nvnahcujo9eb2ndepngav9baepkfdt33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gracecommunitycenter.gracecommunitycenter",
+            "certificate_hash": "7f39fbcf4d2c9631c794f9a11ba2a2f2436a3877"
+          }
+        },
+        {
+          "client_id": "942788934999-mq46dhkb64ht9v9f7g366eodatvdl5rv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjrlpzedo4k_5oKCtAp4_S6Vl_QfmtL1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942788934999-mq46dhkb64ht9v9f7g366eodatvdl5rv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
