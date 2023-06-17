@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -53,6 +54,17 @@ class DvdFragment : Fragment() {
                     holder.imageUrl.load(model.imageUrl) {
                         crossfade(600)
                     }
+
+                    holder.setOnClicklistener(object : ViewHolder.Clicklistener {
+                        override fun onItemClick(view: View?, position: Int) {
+                            findNavController().navigate(
+                                DvdFragmentDirections.actionDvdFragmentToMediaFragment(model.videoUrl.toString())
+                            )
+
+                        }
+                    })
+
+
                 }
 
 
