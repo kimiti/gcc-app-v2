@@ -2,13 +2,15 @@ package com.example.gccapp
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.Fragment
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
@@ -42,6 +44,7 @@ class MediaFragment : Fragment() {
         return mView
     }
 
+
     override fun onStart() {
         super.onStart()
         if (Util.SDK_INT > 23) {
@@ -55,6 +58,9 @@ class MediaFragment : Fragment() {
         if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer()
         }
+
+        val supportActionBar: ActionBar? = (requireActivity() as AppCompatActivity).supportActionBar
+        supportActionBar?.hide()
     }
 
     override fun onPause() {
@@ -69,6 +75,9 @@ class MediaFragment : Fragment() {
         if (Util.SDK_INT > 23) {
             releasePlayer()
         }
+
+        val supportActionBar: ActionBar? = (requireActivity() as AppCompatActivity).supportActionBar
+        supportActionBar?.show()
     }
 
     override fun onDestroyView() {

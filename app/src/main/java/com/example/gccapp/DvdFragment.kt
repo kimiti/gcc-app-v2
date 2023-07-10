@@ -3,8 +3,14 @@ package com.example.gccapp
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +18,9 @@ import coil.load
 import com.example.gccapp.models.Dvd
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class DvdFragment : Fragment() {
 
@@ -21,13 +29,16 @@ class DvdFragment : Fragment() {
 
     private val FireStoreDB = FirebaseFirestore.getInstance().collection("dvds")
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_dvd, container, false)
+
+        // The usage of an interface lets you inject your own implementation
+        val menuHost: MenuHost = requireActivity()
+
 
         recyclerView = mView.findViewById<RecyclerView?>(R.id.dvds_recyclerview)
         recyclerView.setHasFixedSize(true)
@@ -37,6 +48,7 @@ class DvdFragment : Fragment() {
             .Builder<Dvd>()
             .setQuery(FireStoreDB, Dvd::class.java)
             .build()
+
 
 
         val adapter: FirestoreRecyclerAdapter<Dvd, ViewHolder> =
@@ -73,7 +85,35 @@ class DvdFragment : Fragment() {
         adapter.startListening()
         recyclerView.adapter = adapter
 
+
+        // Add menu items without using the Fragment Menu APIs
+        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+        // and an optional Lifecycle.State (here, RESUMED) to indicate when
+        // the menu should be visible
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                // Add menu items here
+                menuInflater.inflate(R.menu.logout_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.menu_logout -> {
+                        // clearCompletedTasks()
+                        Firebase.auth.signOut()
+                        findNavController().navigate(R.id.action_dvdFragment_to_loginFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+
         return mView
     }
+
+
+
 
 }
