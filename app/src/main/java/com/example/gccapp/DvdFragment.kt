@@ -1,15 +1,17 @@
 package com.example.gccapp
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +30,26 @@ class DvdFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
 
     private val FireStoreDB = FirebaseFirestore.getInstance().collection("dvds")
+
+    fun shouldInterceptBackPress() = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(shouldInterceptBackPress()){
+//                    Toast.makeText(requireContext(), "Back press intercepted in:${this@DvdFragment}", Toast.LENGTH_SHORT).show()
+                    // in here you can do logic when backPress is clicked
+                    getActivity()?.moveTaskToBack(true);
+                    getActivity()?.finish();
+                }else{
+                    isEnabled = false
+                    activity?.onBackPressedDispatcher!!.onBackPressed()
+                }
+            }
+        })
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +72,6 @@ class DvdFragment : Fragment() {
             .build()
 
 
-
         val adapter: FirestoreRecyclerAdapter<Dvd, ViewHolder> =
             object : FirestoreRecyclerAdapter<Dvd, ViewHolder>(options) {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -62,9 +83,10 @@ class DvdFragment : Fragment() {
 
                 override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Dvd) {
                     holder.videoTitle.text = model.title
-                    holder.subtitle.text= model.subtitle
+                    holder.subtitle.text = model.subtitle
                     holder.imageUrl.load(model.imageUrl) {
                         crossfade(600)
+                        error(R.drawable.ic_error_placeholder)
                     }
 
                     holder.setOnClicklistener(object : ViewHolder.Clicklistener {
@@ -72,10 +94,8 @@ class DvdFragment : Fragment() {
                             findNavController().navigate(
                                 DvdFragmentDirections.actionDvdFragmentToMediaFragment(model.videoUrl.toString())
                             )
-
                         }
                     })
-
 
                 }
 
@@ -104,6 +124,7 @@ class DvdFragment : Fragment() {
                         findNavController().navigate(R.id.action_dvdFragment_to_loginFragment)
                         true
                     }
+
                     else -> false
                 }
             }
@@ -112,8 +133,5 @@ class DvdFragment : Fragment() {
 
         return mView
     }
-
-
-
 
 }

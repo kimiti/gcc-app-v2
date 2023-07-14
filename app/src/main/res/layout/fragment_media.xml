@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000000"
+    android:keepScreenOn="true"
     tools:context=".MediaFragment">
 
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:default_artwork="@drawable/ic_error_placeholder"/>
 
 </FrameLayout>

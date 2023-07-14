@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -23,10 +24,26 @@ class LoginFragment : Fragment() {
     private lateinit var username: TextInputLayout
     private lateinit var password: TextInputLayout
 
+    fun shouldInterceptBackPress() = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Initialize Firebase Auth
         auth = Firebase.auth
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(shouldInterceptBackPress()){
+//                    Toast.makeText(requireContext(), "Back press intercepted in:${this@DvdFragment}", Toast.LENGTH_SHORT).show()
+                    // in here you can do logic when backPress is clicked
+                    getActivity()?.moveTaskToBack(true);
+                    getActivity()?.finish();
+                }else{
+                    isEnabled = false
+                    activity?.onBackPressedDispatcher!!.onBackPressed()
+                }
+            }
+        })
     }
 
     override fun onStart() {
